@@ -64,6 +64,6 @@ Para comparar: `git diff estado-inicial estado-refactorizado --stat`.
 
 ## Documentación
 Ver [`docs/`](docs/): `diagnostico_code_smells.md`, `solid_clean_code.md`, `refactorings.md`, `pruebas.md`,
-`code_review_checklist.md`, `decisiones_tecnicas.md` y `evidencias/`.
+`code_review_checklist.md`, `decisiones_tecnicas.md`, `declaracion_ia.md` y `evidencias/`.
 
 > Todos los datos son sintéticos. No se usan datos personales reales.
