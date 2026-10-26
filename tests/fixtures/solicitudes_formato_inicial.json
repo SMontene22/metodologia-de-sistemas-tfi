@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "nombre": "Ana Perez",
+    "legajo": "12345",
+    "mail": "ana@mail.com",
+    "tipo": "CERTIFICADO",
+    "desc": "Certificado de alumno regular",
+    "prio": "BAJA",
+    "resp": null,
+    "area": null,
+    "fecha": "2025-06-20",
+    "estado": "PENDIENTE"
+  },
+  {
+    "id": 2,
+    "nombre": "Luis Gomez",
+    "legajo": "23456",
+    "mail": "luis@mail.com",
+    "tipo": "EQUIVALENCIA",
+    "desc": "Equivalencia de Algebra",
+    "prio": "MEDIA",
+    "resp": "Julia Vega",
+    "area": "SECRETARIA",
+    "fecha": "2025-05-15",
+    "estado": "EN_PROCESO"
+  }
+]
