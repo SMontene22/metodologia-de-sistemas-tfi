@@ -7,15 +7,23 @@ docs/evidencias/salida_inicial.txt (capturada en el tag estado-inicial).
 import os
 from datetime import date
 
-from solicitudes.catalogos import Area, Estado
+from solicitudes.catalogos import Area, Estado, Prioridad, TipoSolicitud
 from solicitudes.errores import ErrorDeDominio, ValidacionError
 from solicitudes.modelos import DatosSolicitud, FiltroSolicitudes, Responsable
 from solicitudes.reloj import RelojFijo
 from solicitudes.repositorio import RepositorioJSON
-from solicitudes.reporte import generar_reporte
 from solicitudes.servicio import ServicioSolicitudes
 
 HOY = date(2025, 6, 30)
+
+# Nombre de criterio del escenario -> (campo de FiltroSolicitudes, conversor del valor)
+_CRITERIOS = {
+    "estado": ("estado", Estado),
+    "tipo": ("tipo", TipoSolicitud),
+    "prio": ("prioridad", Prioridad),
+    "legajo": ("legajo", str),
+    "texto": ("texto", str),
+}
 
 
 def ejecutar(directorio):
@@ -47,9 +55,10 @@ def ejecutar(directorio):
         log.append("CAMBIAR #%d %s -> %s" % (i, estado, res))
 
     def buscar(campo, valor):
-        try:
-            ids = [s.id for s in servicio.buscar(FiltroSolicitudes(**{_CRITERIOS.get(campo, campo): _valor(campo, valor)}))]
-        except TypeError:  # criterio inexistente: ya no es expresable en la API tipada
+        if campo in _CRITERIOS:
+            nombre, convertir = _CRITERIOS[campo]
+            ids = [s.id for s in servicio.buscar(FiltroSolicitudes(**{nombre: convertir(valor)}))]
+        else:  # criterio inexistente: la API tipada ya no permite expresarlo
             ids = []
         log.append("BUSCAR %s=%s -> %s" % (campo, valor, ids))
 
@@ -90,19 +99,11 @@ def ejecutar(directorio):
     buscar("texto", "ALGEBRA")
     buscar("color", "rojo")
 
-    log.append(generar_reporte(servicio.listar(), servicio.hoy()))
+    log.append(servicio.reporte())
 
     recargado = ServicioSolicitudes(RepositorioJSON(ruta), RelojFijo(HOY))
     log.append("RECARGA -> %d solicitudes persistidas" % len(recargado.listar()))
     return "\n".join(log) + "\n"
-
-
-_CRITERIOS = {"prio": "prioridad"}
-
-
-def _valor(campo, valor):
-    from solicitudes.catalogos import Prioridad, TipoSolicitud
-    return {"estado": Estado, "tipo": TipoSolicitud, "prio": Prioridad}.get(campo, lambda v: v)(valor)
 
 
 if __name__ == "__main__":

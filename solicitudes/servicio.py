@@ -1,6 +1,7 @@
 """Casos de uso. Orquesta validacion, reglas del modelo y persistencia (SRP)."""
 from .errores import SolicitudNoEncontrada
 from .modelos import FiltroSolicitudes, Solicitud
+from .reporte import generar_reporte
 from .validacion import validar_datos
 
 
@@ -34,8 +35,8 @@ class ServicioSolicitudes:
     def listar(self):
         return self._repositorio.listar()
 
-    def hoy(self):
-        return self._reloj.hoy()
+    def reporte(self):
+        return generar_reporte(self._repositorio.listar(), self._reloj.hoy())
 
     def _obtener(self, id_solicitud):
         solicitud = self._repositorio.obtener(id_solicitud)

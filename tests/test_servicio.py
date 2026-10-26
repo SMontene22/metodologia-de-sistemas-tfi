@@ -76,6 +76,9 @@ class TestOperaciones(unittest.TestCase):
         with self.assertRaises(TransicionInvalida):
             self.servicio.cambiar_estado(self.id, Estado.EN_PROCESO)  # sin responsable
 
+    def test_reporte_usa_el_reloj_inyectado(self):
+        self.assertIn("Total: 1", self.servicio.reporte())
+
     def test_buscar(self):
         self.servicio.registrar(datos(tipo="BAJA", descripcion="Baja de la carrera"))
         self.assertEqual([2], [s.id for s in self.servicio.buscar(FiltroSolicitudes(tipo=TipoSolicitud.BAJA))])
