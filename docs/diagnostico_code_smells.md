@@ -29,7 +29,7 @@ Prioridad: **A** = alta (corregir primero), **M** = media, **B** = baja.
 | 1 | **Módulo Dios / violación de SRP** | Un archivo contiene validación (`reg`), reglas (`sla`, `asig`), persistencia (`cargar`, `guardar`) y presentación (`reporte`). | Cambios de un tema afectan a los demás. | Alto: alto acoplamiento y regresiones cruzadas. | A |
 | 2 | **Long Method** | `reg` (líneas 29-69): 41 líneas, CC=23. | Difícil de leer y probar por partes. | Alto: es el punto con más probabilidad de bugs. | A |
 | 3 | **Long Parameter List / Data Clump** | `reg(nom, leg, mail, t, desc, p, resp, f)` — 8 parámetros; `nom, leg, mail` viajan juntos. | Llamadas propensas a errores de orden. | Medio-alto. | A |
-| 4 | **Switch Statements duplicados (viola OCP)** | La regla "según tipo" se repite en `reg` (prioridad, l.46-56), `asig` (área, l.78-90) y `sla` (l.142-152). | Un tipo nuevo requiere modificar 3 funciones. | Alto: olvidos silenciosos. | A |
+| 4 | **Switch Statements duplicados (viola OCP)** | La regla "según tipo" se repite en `reg` (prioridad, l.46-60), `asig` (área, l.78-90) y `sla` (l.142-152). | Un tipo nuevo requiere modificar 3 funciones. | Alto: olvidos silenciosos. | A |
 | 5 | **Manejo de errores deficiente** | `reg` devuelve `-1..-6`; `asig`/`cambiar` devuelven `False` sin causa; mensajes por `print`. | El llamador no puede distinguir ni reaccionar a la causa. | Alto. | A |
 | 6 | **Estado global mutable** | `lista`, `contador` y `global` en `cargar`/`reg` (l.8-10, 13, 30). | Acoplamiento oculto; imposible aislar pruebas. | Alto. | A |
 | 7 | **Dependencia dura de infraestructura (viola DIP)** | `ARCHIVO` fijo y `open()` dentro de la lógica (l.7, 15, 24). | No se puede cambiar de JSON a BD ni usar memoria en tests. | Medio-alto. | M |
